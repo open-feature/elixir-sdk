@@ -42,7 +42,7 @@ defmodule OpenFeature.StoreTest do
     provider2 = %NoOp{state: :ready}
     Store.set_provider("domain1", provider1)
     Store.set_provider("domain2", provider2)
-    assert [provider1, provider2] == Store.list_providers()
+    assert [provider1, provider2] == Store.list_providers() |> Enum.sort()
   end
 
   test "clear_providers/0 clears all providers and sets default NoOp" do
