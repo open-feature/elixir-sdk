@@ -6,7 +6,8 @@ defmodule OpenFeature.Application do
   @impl true
   def start(_type, _args) do
     children = [
-
+      OpenFeature.Store,
+      OpenFeature.EventEmitter
     ]
 
     opts = [strategy: :one_for_one, name: OpenFeature.Supervisor]
