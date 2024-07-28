@@ -19,6 +19,8 @@ defmodule OpenFeature.MixProject do
   end
 
   defp deps do
-    []
+    [
+      {:mimic, "~> 1.9", only: :test}
+    ]
   end
 end
