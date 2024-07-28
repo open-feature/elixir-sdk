@@ -1,7 +1,8 @@
 defmodule OpenFeature.Client do
   @moduledoc """
-  OpenFeature Client module
+  This module defines the `Client` struct and functions for managing the client's context and callbacks.
   """
+  @moduledoc since: "0.1.0"
 
   require Logger
   alias OpenFeature.EvaluationDetails
@@ -22,31 +23,57 @@ defmodule OpenFeature.Client do
         }
   @type options :: keyword()
 
+  @doc """
+  Sets the context for the client.
+  """
+  @doc since: "0.1.0"
   @spec set_context(client :: t(), context :: Types.context()) :: t()
   def set_context(client, context) do
-    %{client | context: context}
+    Map.put(client, :context, context)
   end
 
+  @doc """
+  Retrieves the context of the client.
+  """
+  @doc since: "0.1.0"
   @spec get_context(client :: t()) :: Types.context()
   def get_context(client) do
     Map.fetch!(client, :context)
   end
 
+  @doc """
+  Adds hooks to the end of the list of current client hooks.
+  """
+  @doc since: "0.1.0"
   @spec add_hooks(client :: t(), hooks :: [Hook.t()]) :: t()
-  def add_hooks(%__MODULE__{hooks: client_hooks} = client, hooks) do
-    %{client | hooks: Enum.concat(client_hooks, hooks)}
+  def add_hooks(client, hooks) do
+    Map.update!(client, :hooks, &Enum.concat(&1, hooks))
   end
 
+  @doc """
+  Retrieves the list of hooks for the client.
+  """
+  @doc since: "0.1.0"
   @spec get_hooks(client :: t()) :: [Hook.t()]
   def get_hooks(client) do
     Map.fetch!(client, :hooks)
   end
 
+  @doc """
+  Clears all hooks for the client.
+  """
+  @doc since: "0.1.0"
   @spec clear_hooks(client :: t()) :: t()
   def clear_hooks(client) do
     %{client | hooks: []}
   end
 
+  @doc """
+  Adds an event handler for the client.
+
+  If the event type is the same as the client's provider state, the handler will be executed immediately.
+  """
+  @doc since: "0.1.0"
   @spec add_event_handler(client :: t(), type :: Types.event_type(), handler :: Types.event_handler()) :: :ok
   def add_event_handler(client, type, handler) do
     EventEmitter.add_handler(client.domain, type, handler)
@@ -62,21 +89,37 @@ defmodule OpenFeature.Client do
     :ok
   end
 
+  @doc """
+  Removes an event handler for the client.
+  """
+  @doc since: "0.1.0"
   @spec remove_event_handler(client :: t(), type :: Types.event_type(), handler :: Types.event_handler()) :: :ok
   def remove_event_handler(client, type, handler) do
     EventEmitter.remove_handler(client.domain, type, handler)
   end
 
+  @doc """
+  Lists all event handlers for the client.
+  """
+  @doc since: "0.1.0"
   @spec list_handlers(client :: t(), type :: Types.event_type()) :: [Types.event_handler()]
   def list_handlers(client, type) do
     EventEmitter.list_handlers(client.domain, type)
   end
 
+  @doc """
+  Clears all event handlers for the client.
+  """
+  @doc since: "0.1.0"
   @spec clear_handlers(client :: t()) :: :ok
   def clear_handlers(client) do
     EventEmitter.clear_handlers(client.domain)
   end
 
+  @doc """
+  Returns a boolean value for a given client flag.
+  """
+  @doc since: "0.1.0"
   @spec get_boolean_value(
           client :: t,
           key :: binary,
@@ -88,6 +131,10 @@ defmodule OpenFeature.Client do
     evaluate_value(client, :boolean, key, default, opts)
   end
 
+  @doc """
+  Returns a string value for a given client flag.
+  """
+  @doc since: "0.1.0"
   @spec get_string_value(
           client :: t,
           key :: binary,
@@ -99,6 +146,10 @@ defmodule OpenFeature.Client do
     evaluate_value(client, :string, key, default, opts)
   end
 
+  @doc """
+  Returns a number value for a given client flag.
+  """
+  @doc since: "0.1.0"
   @spec get_number_value(
           client :: t,
           key :: binary,
@@ -110,6 +161,10 @@ defmodule OpenFeature.Client do
     evaluate_value(client, :number, key, default, opts)
   end
 
+  @doc """
+  Returns a map value for a given client flag.
+  """
+  @doc since: "0.1.0"
   @spec get_map_value(
           client :: t,
           key :: binary,
@@ -121,6 +176,10 @@ defmodule OpenFeature.Client do
     evaluate_value(client, :map, key, default, opts)
   end
 
+  @doc """
+  Returns the evaluation details for a given client flag with boolean value.
+  """
+  @doc since: "0.1.0"
   @spec get_boolean_details(
           client :: t,
           key :: binary,
@@ -132,6 +191,10 @@ defmodule OpenFeature.Client do
     evaluate(client, :boolean, key, default, opts)
   end
 
+  @doc """
+  Returns the evaluation details for a given client flag with string value.
+  """
+  @doc since: "0.1.0"
   @spec get_string_details(
           client :: t,
           key :: binary,
@@ -143,6 +206,10 @@ defmodule OpenFeature.Client do
     evaluate(client, :string, key, default, opts)
   end
 
+  @doc """
+  Returns the evaluation details for a given client flag with number value.
+  """
+  @doc since: "0.1.0"
   @spec get_number_details(
           client :: t,
           key :: binary,
@@ -154,6 +221,10 @@ defmodule OpenFeature.Client do
     evaluate(client, :number, key, default, opts)
   end
 
+  @doc """
+  Returns the evaluation details for a given client flag with map value.
+  """
+  @doc since: "0.1.0"
   @spec get_map_details(
           client :: t,
           key :: binary,

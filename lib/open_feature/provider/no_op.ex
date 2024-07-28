@@ -1,7 +1,15 @@
 defmodule OpenFeature.Provider.NoOp do
   @moduledoc """
-  OpenFeature no-op provider
+  OpenFeature no-op provider, this is the default provider.
+  This provider always returns the default value.
+
+  ## Example
+
+  ```elixir
+  %OpenFeature.Provider.NoOp{}
+  ```
   """
+  @moduledoc since: "0.1.0"
 
   alias OpenFeature.ResolutionDetails
 

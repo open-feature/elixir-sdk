@@ -77,14 +77,14 @@ defmodule OpenFeatureTest do
     end
   end
 
-  describe "get_metadata/1" do
-    test "retrieves metadata for a domain from store" do
+  describe "get_provider/1" do
+    test "retrieves provider for a domain from store" do
       provider = %NoOp{}
       domain = "default"
 
       expect(Store, :get_provider, fn ^domain -> provider end)
 
-      assert ^provider = OpenFeature.get_metadata(domain)
+      assert ^provider = OpenFeature.get_provider(domain)
     end
   end
 

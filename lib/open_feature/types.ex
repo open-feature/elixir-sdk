@@ -1,5 +1,8 @@
 defmodule OpenFeature.Types do
-  @moduledoc false
+  @moduledoc """
+  OpenFeature types.
+  """
+  @moduledoc since: "0.1.0"
 
   @type domain :: binary
   @type flag_value :: boolean | binary | number | map

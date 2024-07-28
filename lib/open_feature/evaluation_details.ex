@@ -1,7 +1,8 @@
 defmodule OpenFeature.EvaluationDetails do
   @moduledoc """
-  OpenFeature EvaluationDetails structure
+  OpenFeature EvaluationDetails struct.
   """
+  @moduledoc since: "0.1.0"
 
   alias OpenFeature.Types
 

@@ -1,7 +1,5 @@
 defmodule OpenFeature.EventEmitter do
-  @moduledoc """
-  OpenFeature.EventEmitter
-  """
+  @moduledoc false
 
   use GenServer
   require Logger

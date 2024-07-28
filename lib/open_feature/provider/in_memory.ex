@@ -1,14 +1,32 @@
 defmodule OpenFeature.Provider.InMemory do
   @moduledoc """
-  In-memory provider for OpenFeature.
+  OpenFeature in-memory provider. This provider is used for testing purposes.
+  The flags are stored in memory and can be manipulated during tests.
+
+  ## Example
+
+  ```elixir
+  %OpenFeature.Provider.InMemory{flags: %{
+    "flag_key" => %{
+      disabled: false,
+      default_variant: "default",
+      variants: %{
+        "default" => "default_value",
+        "variant1" => "variant1_value",
+        "variant2" => "variant2_value"
+      }
+    }
+  }}
+  ```
   """
+  @moduledoc since: "0.1.0"
 
   alias OpenFeature.Provider
   alias OpenFeature.ResolutionDetails
 
   @behaviour Provider
 
-  defstruct name: "InMemory", domain: nil, state: :ready, hooks: [], flags: %{}
+  defstruct name: "InMemory", domain: nil, state: :not_ready, hooks: [], flags: %{}
 
   def initialize(provider, domain, _evaluation_context), do: {:ok, %{provider | state: :ready, domain: domain}}
   def shutdown(_provider), do: :ok

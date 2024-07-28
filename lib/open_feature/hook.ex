@@ -2,6 +2,8 @@ defmodule OpenFeature.Hook do
   @moduledoc """
   OpenFeature Hook struct
   """
+  @moduledoc since: "0.1.0"
+
   alias OpenFeature.EvaluationDetails
   alias OpenFeature.HookContext
   alias OpenFeature.Types

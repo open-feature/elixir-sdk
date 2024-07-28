@@ -1,7 +1,8 @@
 defmodule OpenFeature.ResolutionDetails do
   @moduledoc """
-  OpenFeature ResolutionDetails structure
+  OpenFeature ResolutionDetails struct.
   """
+  @moduledoc since: "0.1.0"
 
   alias OpenFeature.Types
 

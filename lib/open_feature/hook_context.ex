@@ -1,7 +1,8 @@
 defmodule OpenFeature.HookContext do
   @moduledoc """
-  OpenFeature HookContext structure
+  OpenFeature HookContext struct.
   """
+  @moduledoc since: "0.1.0"
 
   alias OpenFeature.Client
   alias OpenFeature.Provider

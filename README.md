@@ -35,7 +35,7 @@ For details, including API documentation, see the respective Hex docs.
 
 ## 🤝 Contributing
 
-Interested in contributing? Great, we'd love your help! To get started, take a look at the [CONTRIBUTING](CONTRIBUTING.md) guide.
+Interested in contributing? Great, we'd love your help!
 
 ## 📜 License
 
