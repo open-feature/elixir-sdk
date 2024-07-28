@@ -54,7 +54,7 @@ defmodule OpenFeature.Provider.InMemory do
   end
 
   defp check_flag_enabled(%{disabled: false}, _default), do: :ok
-  defp check_flag_enabled(%{disabled: true}, default), do: {:ok, %{value: default, reason: :disabled}}
+  defp check_flag_enabled(%{disabled: true}, default), do: {:ok, %ResolutionDetails{value: default, reason: :disabled}}
 
   defp get_variant(%{context_evaluator: context_evaluator}, context) when is_function(context_evaluator, 1),
     do: {:ok, context_evaluator.(context), true}

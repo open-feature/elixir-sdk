@@ -101,7 +101,7 @@ defmodule OpenFeature.Provider.InMemoryTest do
       key = "test_key"
       default = true
       context = %{}
-      expected_result = {:ok, %{value: true, reason: :disabled}}
+      expected_result = {:ok, %ResolutionDetails{value: true, reason: :disabled}}
 
       assert ^expected_result = InMemory.resolve_boolean_value(provider, key, default, context)
     end
@@ -192,7 +192,7 @@ defmodule OpenFeature.Provider.InMemoryTest do
       key = "test_key"
       default = "default"
       context = %{}
-      expected_result = {:ok, %{value: "default", reason: :disabled}}
+      expected_result = {:ok, %ResolutionDetails{value: "default", reason: :disabled}}
 
       assert ^expected_result = InMemory.resolve_string_value(provider, key, default, context)
     end
@@ -281,7 +281,7 @@ defmodule OpenFeature.Provider.InMemoryTest do
       key = "test_key"
       default = 42
       context = %{}
-      expected_result = {:ok, %{value: 42, reason: :disabled}}
+      expected_result = {:ok, %ResolutionDetails{value: 42, reason: :disabled}}
 
       assert ^expected_result = InMemory.resolve_number_value(provider, key, default, context)
     end
@@ -370,7 +370,7 @@ defmodule OpenFeature.Provider.InMemoryTest do
       key = "test_key"
       default = %{}
       context = %{}
-      expected_result = {:ok, %{value: %{}, reason: :disabled}}
+      expected_result = {:ok, %ResolutionDetails{value: %{}, reason: :disabled}}
 
       assert ^expected_result = InMemory.resolve_map_value(provider, key, default, context)
     end

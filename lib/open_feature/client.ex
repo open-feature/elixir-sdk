@@ -260,7 +260,7 @@ defmodule OpenFeature.Client do
     try do
       before_hooks(all_hooks, hook_context, opts)
 
-      evaluation_details = evaluation_details(client, type, key, default, hook_context)
+      evaluation_details = evaluation_details(client, type, key, default, merged_context)
 
       after_hooks(all_hooks, hook_context, evaluation_details, opts)
 
