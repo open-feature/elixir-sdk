@@ -4,6 +4,7 @@ defmodule OpenFeature.Provider do
   """
 
   alias OpenFeature.EventEmitter
+  alias OpenFeature.HookContext
   alias OpenFeature.ResolutionDetails
   alias OpenFeature.Types
 
@@ -57,7 +58,7 @@ defmodule OpenFeature.Provider do
       {:error, e}
   end
 
-  @spec resolve_value(t, Types.flag_type(), Types.flag_value(), Types.flag_value(), Types.context()) :: result
+  @spec resolve_value(t, Types.flag_type(), Types.flag_value(), Types.flag_value(), HookContext.t()) :: result
   def resolve_value(%module{} = provider, :boolean, key, default, context),
     do: module.resolve_boolean_value(provider, key, default, context)
 
