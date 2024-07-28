@@ -14,11 +14,11 @@ defmodule OpenFeature.MixProject do
       name: "OpenFeature",
       source_url: "https://github.com/ejscunha/elixir-open-feature-sdk",
       homepage_url: "https://openfeature.dev",
-      docs: [
-        # The main page in the docs
-        main: "OpenFeature",
-        extras: ["README.md", "LICENSE"]
-      ]
+      docs: docs(),
+
+      # Hex
+      description: "OpenFeature SDK for Elixir",
+      package: package()
     ]
   end
 
@@ -35,6 +35,18 @@ defmodule OpenFeature.MixProject do
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.34", only: :dev, runtime: false},
       {:mimic, "~> 1.9", only: :test}
+    ]
+  end
+
+  defp docs do
+    [main: "OpenFeature", extras: ["README.md", "LICENSE"]]
+  end
+
+  defp package do
+    [
+      maintainers: ["Eduardo Cunha"],
+      licenses: ["Apache-2.0"],
+      links: %{"GitHub" => "https://github.com/ejscunha/elixir-open-feature-sdk"}
     ]
   end
 end
