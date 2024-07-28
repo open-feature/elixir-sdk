@@ -1,4 +1,8 @@
 defmodule OpenFeature.Store do
+  @moduledoc """
+  OpenFeature.Store
+  """
+
   use GenServer
   alias OpenFeature.Provider
   alias OpenFeature.Provider.NoOp

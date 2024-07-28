@@ -1,7 +1,7 @@
 defmodule OpenFeature.StoreTest do
   use ExUnit.Case, async: false
-  alias OpenFeature.Store
   alias OpenFeature.Provider.NoOp
+  alias OpenFeature.Store
 
   @providers_table :open_feature_store_providers
   @context_table :open_feature_store_context

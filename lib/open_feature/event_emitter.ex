@@ -1,4 +1,8 @@
 defmodule OpenFeature.EventEmitter do
+  @moduledoc """
+  OpenFeature.EventEmitter
+  """
+
   use GenServer
   require Logger
   alias OpenFeature.Types

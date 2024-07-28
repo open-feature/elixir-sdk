@@ -2,8 +2,8 @@ defmodule OpenFeatureTest do
   use ExUnit.Case, async: true
   use Mimic
   alias OpenFeature.Client
-  alias OpenFeature.Provider.NoOp
   alias OpenFeature.Provider
+  alias OpenFeature.Provider.NoOp
   alias OpenFeature.Store
 
   describe "set_provider/2" do

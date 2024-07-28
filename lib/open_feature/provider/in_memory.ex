@@ -1,4 +1,8 @@
 defmodule OpenFeature.Provider.InMemory do
+  @moduledoc """
+  In-memory provider for OpenFeature.
+  """
+
   alias OpenFeature.Provider
   alias OpenFeature.ResolutionDetails
 

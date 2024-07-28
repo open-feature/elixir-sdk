@@ -30,9 +30,12 @@ defmodule OpenFeature.Provider do
 
   @spec validate_provider(t()) :: {:ok, t} | {:error, :invalid_provider}
   def validate_provider(%module{} = provider) do
-    if Code.ensure_loaded?(module) and function_exported?(module, :initialize, 3) and
-         function_exported?(module, :shutdown, 1) and function_exported?(module, :resolve_boolean_value, 4) and
-         function_exported?(module, :resolve_string_value, 4) and function_exported?(module, :resolve_number_value, 4) and
+    if Code.ensure_loaded?(module) and
+         function_exported?(module, :initialize, 3) and
+         function_exported?(module, :shutdown, 1) and
+         function_exported?(module, :resolve_boolean_value, 4) and
+         function_exported?(module, :resolve_string_value, 4) and
+         function_exported?(module, :resolve_number_value, 4) and
          function_exported?(module, :resolve_map_value, 4) do
       {:ok, provider}
     else
@@ -44,8 +47,7 @@ defmodule OpenFeature.Provider do
 
   @spec initialize(domain :: binary, provider :: t, context :: Types.context()) :: {:ok, t} | {:error, any()}
   def initialize(domain, %module{} = provider, context) do
-    {:ok, provider} =
-      apply(module, :initialize, [provider, domain, context])
+    {:ok, provider} = module.initialize(provider, domain, context)
 
     EventEmitter.emit(domain, :ready, %{domain: domain, provider: provider.name})
     {:ok, provider}
@@ -57,20 +59,20 @@ defmodule OpenFeature.Provider do
 
   @spec resolve_value(t, Types.flag_type(), Types.flag_value(), Types.flag_value(), Types.context()) :: result
   def resolve_value(%module{} = provider, :boolean, key, default, context),
-    do: apply(module, :resolve_boolean_value, [provider, key, default, context])
+    do: module.resolve_boolean_value(provider, key, default, context)
 
   def resolve_value(%module{} = provider, :string, key, default, context),
-    do: apply(module, :resolve_string_value, [provider, key, default, context])
+    do: module.resolve_string_value(provider, key, default, context)
 
   def resolve_value(%module{} = provider, :number, key, default, context),
-    do: apply(module, :resolve_number_value, [provider, key, default, context])
+    do: module.resolve_number_value(provider, key, default, context)
 
   def resolve_value(%module{} = provider, :map, key, default, context),
-    do: apply(module, :resolve_map_value, [provider, key, default, context])
+    do: module.resolve_map_value(provider, key, default, context)
 
   @spec shutdown(t) :: :ok
   def shutdown(%module{} = provider) do
-    apply(module, :shutdown, [provider])
+    module.shutdown(provider)
   rescue
     _ -> :ok
   end
