@@ -1,4 +1,7 @@
-[![Hex Version](https://img.shields.io/hexpm/v/open_feature.svg)](https://hex.pm/packages/open_feature) [![Hex Docs](https://img.shields.io/badge/docs-hexpm-blue.svg)](https://hexdocs.pm/open_feature/)
+[![Version](https://img.shields.io/hexpm/v/open_feature.svg)](https://hex.pm/packages/open_feature)
+[![Docs](https://img.shields.io/badge/docs-hexpm-blue.svg)](https://hexdocs.pm/open_feature/)
+[![License](https://img.shields.io/hexpm/l/req.svg)](https://github.com/ejscunha/elixir-open-feature-sdk/blob/main/LICENSE.md)
+[![CI](https://github.com/ejscunha/elixir-open-feature-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/ejscunha/elixir-open-feature-sdk/actions/workflows/ci.yml)
 
 <!-- markdownlint-disable MD033 -->
 <p align="center">
@@ -38,7 +41,7 @@ end
 
 ## 📓 Usage
 
-``` elixir
+```elixir
 provider = %OpenFeature.Provider.InMemory{
   flags: %{
     "flag_key" => %{

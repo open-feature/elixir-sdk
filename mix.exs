@@ -39,7 +39,7 @@ defmodule OpenFeature.MixProject do
   end
 
   defp docs do
-    [main: "OpenFeature", extras: ["README.md", "LICENSE"]]
+    [main: "readme", extras: ["README.md", "LICENSE"]]
   end
 
   defp package do
