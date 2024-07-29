@@ -1,3 +1,5 @@
 import Config
 
-import_config "#{config_env()}.exs"
+if config_env() == :test do
+  config :logger, backends: []
+end

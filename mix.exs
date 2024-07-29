@@ -9,6 +9,11 @@ defmodule OpenFeature.MixProject do
       start_permanent: Mix.env() == :prod,
       test_paths: ["test/unit", "test/integration"],
       deps: deps(),
+      preferred_cli_env: [
+        test: :test,
+        docs: :docs,
+        "hex.publish": :docs
+      ],
 
       # Docs
       name: "OpenFeature",
@@ -33,7 +38,7 @@ defmodule OpenFeature.MixProject do
     [
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:ex_doc, "~> 0.34", only: [:dev, :test], runtime: false},
+      {:ex_doc, "~> 0.34", only: :docs, runtime: false},
       {:mimic, "~> 1.9", only: :test}
     ]
   end

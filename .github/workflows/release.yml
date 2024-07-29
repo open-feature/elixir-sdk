@@ -14,23 +14,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ github.event.release.tag_name}}
 
       - uses: erlef/setup-beam@v1
         with:
           otp-version: 27.0
           elixir-version: 1.17
 
-      - uses: actions/cache@v4
-        with:
-          path: |
-            deps
-            _build
-          key: ${{ runner.os }}-mix-1.17-27.0-${{ hashFiles('**/mix.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-mix-1.17-27.0-
+      - name: Run mix deps.get
+        run: mix deps.get --only docs
 
-      - name: Hex publish
+      - name: Run mix deps.compile
+        run: mix deps.compile
+
+      - name: Run mix compile
+        run: mix compile
+        env:
+          MIX_ENV: docs
+
+      - name: Run mix hex.publish
         run: mix hex.publish --yes
         env:
           HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
+          MIX_ENV: docs
