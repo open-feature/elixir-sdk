@@ -39,14 +39,17 @@ defmodule OpenFeature.MixProject do
   end
 
   defp docs do
-    [main: "readme", extras: ["README.md", "LICENSE"]]
+    [main: "readme", extras: ["README.md", "LICENSE", "CHANGELOG.md"]]
   end
 
   defp package do
     [
       maintainers: ["Eduardo Cunha"],
       licenses: ["Apache-2.0"],
-      links: %{"GitHub" => "https://github.com/ejscunha/elixir-open-feature-sdk"}
+      links: %{
+        "GitHub" => "https://github.com/ejscunha/elixir-open-feature-sdk",
+        "Changelog" => "https://hexdocs.pm/open_feature/changelog.html"
+      }
     ]
   end
 end
