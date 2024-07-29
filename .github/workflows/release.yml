@@ -1,0 +1,36 @@
+name: Hex Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  hex_release:
+    runs-on: ubuntu-latest
+    environment:
+      name: 'Hex'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: 27.0
+          elixir-version: 1.17
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-mix-1.17-27.0-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-1.17-27.0-
+
+      - name: Hex publish
+        run: mix hex.publish --yes
+        env:
+          HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
