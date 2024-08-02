@@ -4,7 +4,7 @@ defmodule OpenFeature.MixProject do
   def project do
     [
       app: :open_feature,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
       test_paths: ["test/unit", "test/integration"],
@@ -17,7 +17,7 @@ defmodule OpenFeature.MixProject do
 
       # Docs
       name: "OpenFeature",
-      source_url: "https://github.com/ejscunha/elixir-open-feature-sdk",
+      source_url: "https://github.com/open-feature/elixir-sdk",
       homepage_url: "https://openfeature.dev",
       docs: docs(),
 
@@ -44,7 +44,7 @@ defmodule OpenFeature.MixProject do
   end
 
   defp docs do
-    [main: "readme", extras: ["README.md", "LICENSE", "CHANGELOG.md"]]
+    [main: "OpenFeature", extras: ["README.md", "LICENSE", "CONTRIBUTING.md", "CHANGELOG.md"]]
   end
 
   defp package do
@@ -52,7 +52,7 @@ defmodule OpenFeature.MixProject do
       maintainers: ["Eduardo Cunha"],
       licenses: ["Apache-2.0"],
       links: %{
-        "GitHub" => "https://github.com/ejscunha/elixir-open-feature-sdk",
+        "GitHub" => "https://github.com/open-feature/elixir-sdk",
         "Changelog" => "https://hexdocs.pm/open_feature/changelog.html"
       }
     ]
