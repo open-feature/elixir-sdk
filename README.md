@@ -138,7 +138,7 @@ OpenFeature.set_global_context(%{region: "us-east-1"})
 client = OpenFeature.get_client() |> OpenFeature.Client.set_context(%{region: "us-east-1"})
 
 # set a value to the invocation context
-flag_value = OpenFeature.Client.get_boolean_value(client, "some-flag", flag, %{region: "us-east-1"})
+flag_value = OpenFeature.Client.get_boolean_value(client, "some-flag", flag, context: %{region: "us-east-1"})
 ```
 
 ### Hooks
