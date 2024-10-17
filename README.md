@@ -199,7 +199,7 @@ Please refer to the documentation of the provider you're using to see what event
 
 ```elixir
 # add an event handler to a client
-OpenFeature.Client.add_event_handler(client, :provider_configuration_changed, fn event_details ->
+OpenFeature.Client.add_event_handler(client, :configuration_changed, fn event_details ->
   # do something when the provider's flag settings change
 end)
 ```
