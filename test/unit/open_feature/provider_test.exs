@@ -100,7 +100,7 @@ defmodule OpenFeature.ProviderTest do
     test "should return false if the provided providers are not equal" do
       refute Provider.equal?(@no_op_provider, @in_memory_provider)
 
-      different_no_op = Map.put(@no_op_provider, :domain, "some_domain")
+      different_no_op = Map.put(@no_op_provider, :name, "some_name")
       refute Provider.equal?(@no_op_provider, different_no_op)
     end
   end
