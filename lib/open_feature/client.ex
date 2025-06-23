@@ -82,7 +82,7 @@ defmodule OpenFeature.Client do
       try do
         handler.(%{provider: client.provider.name, domain: client.domain})
       rescue
-        e -> Logger.error("Error running event handler. Error: #{e}")
+        e -> Logger.error("Error running event handler. Error: #{inspect(e)}")
       end
     end
 
@@ -260,6 +260,8 @@ defmodule OpenFeature.Client do
     try do
       before_hooks(all_hooks, hook_context, opts)
 
+      short_circuit_if_not_ready(client)
+
       evaluation_details = evaluation_details(client, type, key, default, merged_context)
 
       after_hooks(all_hooks, hook_context, evaluation_details, opts)
@@ -267,16 +269,8 @@ defmodule OpenFeature.Client do
       evaluation_details
     rescue
       e ->
-        Logger.error("An error happened. #{inspect(e)}")
         error_hooks(all_hooks, hook_context, e, opts)
-
-        %EvaluationDetails{
-          key: key,
-          value: default,
-          reason: :error,
-          error_code: :general,
-          error_message: Exception.message(e)
-        }
+        handle_evaluate_error(e, key, default)
     after
       all_hooks
       |> Enum.reverse()
@@ -288,6 +282,14 @@ defmodule OpenFeature.Client do
     client
     |> evaluate(type, key, default, opts)
     |> Map.fetch!(:value)
+  end
+
+  defp short_circuit_if_not_ready(%__MODULE__{provider: provider}) do
+    case Map.get(provider, :state) do
+      :not_ready -> raise "provider_not_ready"
+      :fatal -> raise "provider_fatal"
+      _state -> :ok
+    end
   end
 
   defp evaluation_details(client, type, key, default, context) do
@@ -316,24 +318,22 @@ defmodule OpenFeature.Client do
           error_message: "flag not found"
         }
 
-      {:error, :variant_not_found, _variant} ->
+      {:error, :variant_not_found, variant} ->
         %EvaluationDetails{
           key: key,
           value: default,
           reason: :error,
           error_code: :general,
-          error_message: "variant not found"
+          error_message: "variant not found, variant: #{inspect(variant)}"
         }
 
       {:error, :unexpected_error, error} ->
-        Logger.error("Unexpected error happened while resolving value. Error: #{error}")
-
         %EvaluationDetails{
           key: key,
           value: default,
           reason: :error,
           error_code: :general,
-          error_message: "unexpected error"
+          error_message: "unexpected error, error: #{inspect(error)}"
         }
     end
   end
@@ -367,9 +367,7 @@ defmodule OpenFeature.Client do
         try do
           error_hook.(hook_context, error, hook_hints)
         rescue
-          e ->
-            Logger.error("Unhandled error during 'error' hook: #{inspect(e)}")
-            Logger.error(inspect(__STACKTRACE__))
+          _e -> :ok
         end
     end)
   end
@@ -385,10 +383,38 @@ defmodule OpenFeature.Client do
         try do
           finally.(hook_context, hook_hints)
         rescue
-          e ->
-            Logger.error("Unhandled error during 'finally' hook: #{inspect(e)}")
-            Logger.error(inspect(__STACKTRACE__))
+          _e -> :ok
         end
     end)
+  end
+
+  defp handle_evaluate_error(%RuntimeError{message: "provider_not_ready"}, key, default) do
+    %EvaluationDetails{
+      key: key,
+      value: default,
+      reason: :error,
+      error_code: :provider_not_ready,
+      error_message: "provider not ready"
+    }
+  end
+
+  defp handle_evaluate_error(%RuntimeError{message: "provider_fatal"}, key, default) do
+    %EvaluationDetails{
+      key: key,
+      value: default,
+      reason: :error,
+      error_code: :provider_fatal,
+      error_message: "provider fatal"
+    }
+  end
+
+  defp handle_evaluate_error(e, key, default) do
+    %EvaluationDetails{
+      key: key,
+      value: default,
+      reason: :error,
+      error_code: :general,
+      error_message: Exception.message(e)
+    }
   end
 end
