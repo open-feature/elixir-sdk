@@ -58,7 +58,7 @@ defmodule Integration.ValueResolutionTest do
                variant: nil,
                reason: :error,
                error_code: :general,
-               error_message: "variant not found"
+               error_message: "variant not found, variant: \"variant2\""
              } =
                Client.get_string_details(client, "target_key", "default", context: %{variant: "variant2"})
     end

@@ -19,7 +19,7 @@ defmodule OpenFeature.Types do
           | :general
   @type reason :: :static | :default | :targeting_match | :split | :cached | :disabled | :unknown | :stale | :error
   @type flag_metadata :: %{binary => boolean | binary | number}
-  @type provider_status :: :not_ready | :ready | :stale
+  @type provider_status :: :not_ready | :ready | :error | :stale | :fatal
   @type event_type :: :ready | :error | :configuration_changed | :stale
   @type event_details :: %{:provider => binary, optional(:domain) => binary, optional(binary | atom) => any}
   @type event_handler :: (event_details -> any())

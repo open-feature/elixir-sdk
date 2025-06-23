@@ -24,7 +24,7 @@ defmodule OpenFeature.ClientTest do
     {:ok, client: client}
   end
 
-  describe("Public API") do
+  describe "Public API" do
     test "set_context/2 sets the context", %{client: client} do
       context = %{user: "test_user"}
       updated_client = Client.set_context(client, context)
@@ -439,7 +439,7 @@ defmodule OpenFeature.ClientTest do
                value: ^default,
                reason: :error,
                error_code: :general,
-               error_message: "variant not found"
+               error_message: "variant not found, variant: \"variant\""
              } = Client.get_boolean_details(client, key, default)
     end
 
@@ -456,7 +456,41 @@ defmodule OpenFeature.ClientTest do
                value: ^default,
                reason: :error,
                error_code: :general,
-               error_message: "unexpected error"
+               error_message: "unexpected error, error: :error"
+             } = Client.get_boolean_details(client, key, default)
+    end
+
+    test "returns evaluation details with default value if provider is not ready", %{client: client} do
+      key = "key"
+      default = true
+
+      client = put_in(client.provider.state, :not_ready)
+
+      reject(Provider, :resolve_value, 5)
+
+      assert %EvaluationDetails{
+               key: ^key,
+               value: ^default,
+               reason: :error,
+               error_code: :provider_not_ready,
+               error_message: "provider not ready"
+             } = Client.get_boolean_details(client, key, default)
+    end
+
+    test "returns evaluation details with default value if provider is fatal", %{client: client} do
+      key = "key"
+      default = true
+
+      client = put_in(client.provider.state, :fatal)
+
+      reject(Provider, :resolve_value, 5)
+
+      assert %EvaluationDetails{
+               key: ^key,
+               value: ^default,
+               reason: :error,
+               error_code: :provider_fatal,
+               error_message: "provider fatal"
              } = Client.get_boolean_details(client, key, default)
     end
   end
