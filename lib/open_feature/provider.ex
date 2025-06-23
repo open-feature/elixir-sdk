@@ -122,16 +122,12 @@ defmodule OpenFeature.Provider do
   end
 
   @doc """
-  Checks if two providers are equal based on their name, domain, and state.
+  Checks if two providers are equal based on their module and name.
   """
   @doc since: "0.1.0"
-  @doc deprecated: "This function will be removed in the next major version."
   @spec equal?(t, t) :: boolean
   def equal?(%module1{} = provider1, %module2{} = provider2) do
-    module1 == module2 &&
-      provider1.name == provider2.name &&
-      provider1.domain == provider2.domain &&
-      provider1.state == provider2.state
+    module1 == module2 && provider1.name == provider2.name
   end
 
   def equal?(_, _), do: false

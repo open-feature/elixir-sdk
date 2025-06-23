@@ -22,7 +22,7 @@ defmodule OpenFeature do
   @spec set_provider(domain :: Types.domain(), provider :: Provider.t()) :: {:ok, Provider.t()} | {:error, atom}
   def set_provider(domain \\ "default", provider) do
     with {:ok, provider} <- Provider.validate_provider(provider),
-         {:not_set, old_provider} <- check_if_already_set(domain, provider),
+         {:replace, old_provider} <- check_if_already_set(domain, provider),
          context = get_global_context(),
          {:ok, provider} <- Provider.initialize(domain, provider, context) do
       Store.set_provider(domain, provider)
@@ -79,19 +79,19 @@ defmodule OpenFeature do
   @spec shutdown() :: :ok
   def shutdown, do: Enum.each(Store.list_providers(), &Provider.shutdown/1)
 
-  defp check_if_already_set(domain, %provider_module{} = provider) do
-    case Store.get_provider(domain) do
-      %^provider_module{} = domain_provider -> {:ok, domain_provider}
-      _provider -> {:not_set, provider}
+  defp check_if_already_set(domain, provider) do
+    domain_provider = Store.get_provider(domain)
+
+    if Provider.equal?(domain_provider, provider) do
+      {:ok, domain_provider}
+    else
+      {:replace, domain_provider}
     end
   end
 
-  defp maybe_shutdown_old_provider(%old_provider_module{} = old_provider) do
+  defp maybe_shutdown_old_provider(old_provider) do
     Store.list_providers()
-    |> Enum.any?(fn
-      %^old_provider_module{} = _provider -> true
-      _provider -> false
-    end)
+    |> Enum.any?(&Provider.equal?(&1, old_provider))
     |> then(fn
       false -> Provider.shutdown(old_provider)
       true -> :ok
