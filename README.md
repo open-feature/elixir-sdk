@@ -17,8 +17,8 @@
   </a>
   <!-- x-release-please-start-version -->
 
-  <a href="https://github.com/open-feature/elixir-sdk/releases/tag/v0.1.1">
-    <img alt="Release" src="https://img.shields.io/static/v1?label=release&message=v0.1.1&color=blue&style=for-the-badge" />
+  <a href="https://github.com/open-feature/elixir-sdk/releases/tag/v0.1.2">
+    <img alt="Release" src="https://img.shields.io/static/v1?label=release&message=v0.1.2&color=blue&style=for-the-badge" />
   </a>
 
   <!-- x-release-please-end -->
@@ -86,7 +86,7 @@ For details, including API documentation, see the respective [Hex docs](https://
 
 | Status | Features                                                            | Description                                                                                                                                                  |
 | ------ | --------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| ⚠️      | [Providers](#providers)                                             | Integrate with a commercial, open source, or in-house feature management tool.                                                                               |
+| ✅      | [Providers](#providers)                                             | Integrate with a commercial, open source, or in-house feature management tool.                                                                               |
 | ✅      | [Targeting](#targeting)                                             | Contextually-aware flag evaluation using [evaluation context](https://openfeature.dev/docs/reference/concepts/evaluation-context).                           |
 | ✅      | [Hooks](#hooks)                                                     | Add functionality to various stages of the flag evaluation life-cycle.                                                                                       |
 | ✅      | [Logging](#logging)                                                 | Integrate with popular logging packages.                                                                                                                     |
