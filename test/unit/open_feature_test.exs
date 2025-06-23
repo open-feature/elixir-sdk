@@ -14,8 +14,8 @@ defmodule OpenFeatureTest do
 
       Provider
       |> expect(:validate_provider, fn ^provider -> {:ok, provider} end)
-      |> expect(:equal?, fn nil, ^provider -> false end)
       |> expect(:initialize, fn ^domain, ^provider, ^context -> {:ok, provider} end)
+      |> expect(:shutdown, fn _old_provider -> :ok end)
 
       Store
       |> expect(:set_provider, fn ^domain, ^provider -> :ok end)
@@ -30,9 +30,7 @@ defmodule OpenFeatureTest do
       provider = %NoOp{}
       domain = "default"
 
-      Provider
-      |> expect(:validate_provider, fn ^provider -> {:ok, provider} end)
-      |> expect(:equal?, fn ^provider, ^provider -> true end)
+      expect(Provider, :validate_provider, fn ^provider -> {:ok, provider} end)
 
       expect(Store, :get_provider, fn ^domain -> provider end)
 

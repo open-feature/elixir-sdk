@@ -13,7 +13,7 @@ defmodule OpenFeature do
   Sets the provider for a given domain.
 
   The provider is validated and is initialized with the global context.
-  If a provider is already set for the domain, it will be replaced and shutdown.
+  If a provider is already set for the domain, it will be replaced and shutdown if not set for other domains.
   If the provider is the same as the one already set, it will not be replaced.
   If the provider is invalid or fails to be initialized, an error will be returned.
   If no domain is provided, the default domain will be used.
@@ -79,23 +79,22 @@ defmodule OpenFeature do
   @spec shutdown() :: :ok
   def shutdown, do: Enum.each(Store.list_providers(), &Provider.shutdown/1)
 
-  defp check_if_already_set(domain, provider) do
-    domain_provider = Store.get_provider(domain)
-
-    if Provider.equal?(domain_provider, provider) do
-      {:ok, domain_provider}
-    else
-      {:not_set, domain_provider}
+  defp check_if_already_set(domain, %provider_module{} = provider) do
+    case Store.get_provider(domain) do
+      %^provider_module{} = domain_provider -> {:ok, domain_provider}
+      _provider -> {:not_set, provider}
     end
   end
 
-  defp maybe_shutdown_old_provider(old_provider) do
+  defp maybe_shutdown_old_provider(%old_provider_module{} = old_provider) do
     Store.list_providers()
-    |> Enum.any?(fn provider ->
-      Provider.equal?(provider, old_provider)
+    |> Enum.any?(fn
+      %^old_provider_module{} = _provider -> true
+      _provider -> false
     end)
-    |> if do
-      Provider.shutdown(old_provider)
-    end
+    |> then(fn
+      false -> Provider.shutdown(old_provider)
+      true -> :ok
+    end)
   end
 end
