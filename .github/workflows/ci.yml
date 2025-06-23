@@ -26,7 +26,7 @@ jobs:
               otp: '28.0'
             lint: lint
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
