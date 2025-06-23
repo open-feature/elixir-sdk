@@ -24,7 +24,6 @@ jobs:
           - pair:
               elixir: '1.18'
               otp: '28.0'
-            lint: lint
 
     runs-on: ubuntu-latest
 
