@@ -255,6 +255,37 @@ defmodule OpenFeature.ClientTest do
       assert_receive :hook_called
     end
 
+    test "context from before hook is carried to after hook", %{client: client} do
+      parent = self()
+      context = %{key: "value"}
+      key = "key"
+      default = true
+
+      hook = %Hook{
+        before: fn _hook_context, _hints ->
+          send(parent, :before_hook_called)
+          %{key: "other data"}
+        end,
+        after: fn hook_context, _details, _hints ->
+          assert_receive :provider_called
+          assert hook_context.context[:key] == "other data"
+          send(parent, :after_hook_called)
+        end
+      }
+
+      expect(Provider, :resolve_value, 1, fn _provider, _type, _key, _default, _context ->
+        assert_receive :before_hook_called
+        send(parent, :provider_called)
+        {:ok, %ResolutionDetails{value: true}}
+      end)
+
+      client = Client.add_hooks(client, [hook])
+
+      Client.get_boolean_value(client, key, default, context: context)
+
+      assert_receive :after_hook_called
+    end
+
     test "does not resolve value if an error occurs in before hooks", %{client: client} do
       parent = self()
       context = %{key: "value"}

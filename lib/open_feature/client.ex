@@ -258,7 +258,7 @@ defmodule OpenFeature.Client do
     }
 
     try do
-      before_hooks(all_hooks, hook_context, opts)
+      hook_context = before_hooks(all_hooks, hook_context, opts)
 
       short_circuit_if_not_ready(client)
 
@@ -341,10 +341,19 @@ defmodule OpenFeature.Client do
   defp before_hooks(hooks, hook_context, opts) do
     hook_hints = Keyword.get(opts, :hook_hints, %{})
 
-    Enum.each(hooks, fn
-      %Hook{before: nil} -> :ok
-      %Hook{before: before} -> before.(hook_context, hook_hints)
-    end)
+    context =
+      Enum.reduce(hooks, hook_context.context, fn
+        %Hook{before: nil}, context ->
+          context
+
+        %Hook{before: before}, context ->
+          case before.(hook_context, hook_hints) do
+            data when is_map(data) -> Map.merge(context, data)
+            _other -> context
+          end
+      end)
+
+    Map.put(hook_context, :context, context)
   end
 
   defp after_hooks(hooks, hook_context, evaluation_details, opts) do
